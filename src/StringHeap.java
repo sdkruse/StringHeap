@@ -35,6 +35,7 @@ public class StringHeap {
 		int dif = first.length() - second.length();
 		if(dif != 0) {
 			priority = dif;
+			System.out.println("first priority criteria " + priority);
 		}else{
 		
 		String string;
@@ -71,8 +72,10 @@ public class StringHeap {
 			
 			if(countDif != 0) {
 				priority = countDif;
+				System.out.println("Second Priority Criteria " + priority);
 			}else {
 				priority = first.compareTo(second);
+				System.out.println("Third Priority Criteria " + priority);
 			}
 			
 		}
@@ -91,8 +94,26 @@ public class StringHeap {
 			throw new IllegalArgumentException("Oh no!");
 		}
 		
+		if(this.size == this.heap.length) {
+			StringHeap newHeap = new StringHeap(2*this.size);
+			
+			for(int i = 0; i < this.heap.length; i++) {
+				newHeap.heap[i] = this.heap[i];
+			}
+			
+			this.heap = newHeap.heap;
+		}
 		
 		
+		this.heap[size] = value;
+		
+		//make sure the heap maintains it's structure
+		StringHeap percHeap = this.percUp(size);
+		
+		this.heap = percHeap.heap;
+		
+		
+		size++;	
 		
 		
 	}
@@ -102,11 +123,28 @@ public class StringHeap {
 	 * to maintain priority rules
 	 * 
 	 * @return the String with the highest priority; null if the heap is empty
-	 */
+	
+	 
 	public String remove() {
-		// TODO
+		
+		if(this.size > 0) {
+			String removed = this.heap[0];
+			
+			this.heap[0] = this.heap[size];
+			
+			this.heap[size] = null;
+			
+		
+			StringHeap percDownHeap = this.percDown(0);
+			heap = percDownHeap.heap;
+			size--;
+			
+			return removed;
+			
+		}
 		return null;
 	}
+	*/
 
 	/*
 	 * @return true if the String has no elements, false otherwise
@@ -123,7 +161,6 @@ public class StringHeap {
 	 * @return the number of Strings stored in the heap
 	 */
 	public int getSize() {
-		// TODO
 		return size;
 	}
 
@@ -131,7 +168,6 @@ public class StringHeap {
 	 * @return the element with the highest priority but do not remove it
 	 */
 	public String peek() {
-		// TODO
 		return heap[0];
 	}
 
@@ -179,7 +215,11 @@ public class StringHeap {
 	 * 	- one per line following the indexing of the heap array
 	 */
 	public void printHeap() {
-		// TODO
+	System.out.println(this.size);
+	
+	for(int j = 0; j < this.size; j++) {
+	System.out.println(this.heap[j]);
+	}
 	}
 
 	/*
@@ -218,21 +258,69 @@ public class StringHeap {
 		return rightChild(index) <= size; } 
 
 	// swaps the elements at two indices in the array
-	private void swap(Integer [] a, int index1, int index2) { 
-		Integer temp = a[index1];
+	private void swap(String [] a, int index1, int index2) { 
+		String temp = a[index1];
 		a[index1] = a[index2];
 		a[index2] = temp;
 	} 
-	
-	//private percUp() {
+	/*
+	 * determines which String has higher priority, using rules in this order:
+	 * 	0) convert each String to lower case first, since case does not matter
+	 * 	1) if lengths are different, the largest length String has priority
+	 * 	2) else if numVowels (a,e,i,o,u) are different, the String with the most vowels has priority
+	 * 	3) else, alphabetical order (since already in lower case, use .compareTo() in the String class)
+	 * 
+	 * @param first the first String
+	 * @param second the second String
+	 * @return a positive integer if first has higher priority; a negative integer if
+	 * second has higher priority; 0 if the priorities are equal
+	 */
+	private StringHeap percUp(int cur) {
+		if(!hasParent(cur)) {
+			return this;
+		}
 		
-	//}
+		if(prioritize(this.heap[cur], this.heap[parent(cur)]) > 0) {
+			swap(this.heap, cur, parent(cur));
+			System.out.println("");
+			return percUp(parent(cur));
+		}else {
+			return this;
+		}
+
+	}
 	
-	
-	
+	/**
+	private StringHeap percDown(int cur) {
+		if(this.hasLeftChild(cur) && this.hasRightChild(cur)) {
+			if(prioritize(this.heap[leftChild(cur)], this.heap[rightChild(cur)]) > 0) {
+				
+			}
+		}
+		if(prioritize(this.heap. cur,)
+		
+		
+		return null;
+	}
+	*/
 
 	public static void main(String[] args) {
-		// you do not need a main method, but you can use it to test your code
+		StringHeap myHeap = new StringHeap(10);
+		myHeap.add("Dad");
+		myHeap.add("Mom");
+		myHeap.add("Jake");
+		myHeap.add("Gabe");
+		myHeap.add("Abby");
+		myHeap.add("Sam");
+		myHeap.add("Hannah");
+		myHeap.add("Nate");
+		myHeap.add("Eliza");
+		myHeap.add("Lydia");
+		
+		myHeap.printHeap();
+		
+		
+		
 	}
 }
 
