@@ -5,21 +5,23 @@ import java.util.Scanner;
 public class HeapRunner {
 	public static void main(String[] args) {
 		// TODO: instantiate your heap
-
+		StringHeap heap = new StringHeap(5);
 		// TODO: add a try/catch block to make the code below compile
+		try {
+			Scanner scnr = new Scanner(new File("C:\\Users\\skruse\\Downloads\\words2.txt"));
+			while (scnr.hasNextLine()) {
+				String word = scnr.nextLine();
+				heap.add(word);
+			}
+			heap.remove();
+			heap.printHeap();
 
-		//Scanner scnr = new Scanner(new File("words2.txt"));
-		//while (scnr.hasNextLine()) {
-			//String word = scnr.nextLine();
-			//heap.add(word);
-		//}
+			System.out.println("------------------------------");
 
-		// TODO: print out heap using printHeap()
+			heap.printLevelOrderTraversal();
 
-		//System.out.println("------------------------------");
-
-		// TODO: print out heap using printLevelOrderTraversal()
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		}
 	}
 }
-
-
